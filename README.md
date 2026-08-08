@@ -48,5 +48,3 @@ DietPi_RPi5-ARMv8-Trixie.img2      264192 2244935 1980744 967.2M 83 Linux
 -Import the provided .json dashboard in Grafana or create your own.
 
 -Enjoy!
-
-<img width="1920" height="1080" alt="Screenshot From 2026-08-03 15-02-18" src="https://github.com/user-attachments/assets/35df7a18-ddda-4eb2-be91-7e047f85b570" />
