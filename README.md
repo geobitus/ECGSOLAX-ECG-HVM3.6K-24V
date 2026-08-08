@@ -23,7 +23,7 @@ DietPi_RPi5-ARMv8-Trixie.img1 *      2048  264191  262144   128M  c W95 FAT32 (L
 DietPi_RPi5-ARMv8-Trixie.img2      264192 2244935 1980744 967.2M 83 Linux 
 
 -$~ echo $((264192 * 512)) "calculated offset"  
-135266304
+135266304  calculated offset
 
 -$~ mkdir /media/sdcard
 
