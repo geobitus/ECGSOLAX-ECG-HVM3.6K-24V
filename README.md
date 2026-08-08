@@ -1,5 +1,5 @@
 # ECGSOLAX-ECG-HVM3.6K-24V
-
+<img> https://github.com/geobitus/ECGSOLAX-ECG-HVM3.6K-24V/blob/main/ecgsolax.png?raw=true  
 The USB socket COM(8) is in fact a communication RS232 serial +-12V level.  
 
 Use an USB/RS232-DB9-male converter connected to the RaspberryPI USB and a spare USB cable wired as described: red = +5V not used, green = pin2 DB9(RX), white = pin3 DB9(TX), black = pin5 DB9(GND) connected to the COM(8) of the inverter.   
