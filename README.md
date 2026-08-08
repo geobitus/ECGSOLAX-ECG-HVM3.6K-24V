@@ -2,8 +2,8 @@
 <img width="1589" height="941" alt="ecgsolax" src="https://github.com/user-attachments/assets/5c0890ee-728f-4337-af91-479dcab7361b" />  
 
 The USB socket COM(8) is in fact a communication RS232 serial +-12V level.  
-
-Use an USB/RS232-DB9-male converter connected to the RaspberryPI USB and a spare USB cable wired as described: red = +5V not used, green = pin2 DB9(RX), white = pin3 DB9(TX), black = pin5 DB9(GND) connected to the COM(8) of the inverter.   
+Use an USB/RS232-DB9-male converter connected to the RaspberryPI USB and a spare USB cable wired as described:  
+red = +5V not used, green = pin2 DB9(RX), white = pin3 DB9(TX), black = pin5 DB9(GND) connected to the COM(8) of the inverter.   
 That's all the hardware you need.  
 As OS I chose the DietPI release for the easiness of deployment and convenience.   
 Download the official image from https://dietpi.com/downloads/images/DietPi_RPi5-ARMv8-Trixie.img.xz  
@@ -47,9 +47,7 @@ DietPi_RPi5-ARMv8-Trixie.img2      264192 2244935 1980744 967.2M 83 Linux
 -In Grafana add data source and select influxdb set http://localhost:8086, Database 'solar', User 'apollo', Password 'apollo' press test button and if you see some measurements you are ready to go.
 
 -Import the provided .json dashboard in Grafana or create your own.  
-<img width="1920" height="1080" alt="Screenshot From 2026-08-03 15-02-18" src="https://github.com/user-attachments/assets/2d34a69a-8b78-4645-87f0-67b2661922a2" />
 
-
-
+<img width="1920" height="1080" alt="Screenshot From 2026-08-03 15-02-18" src="https://github.com/user-attachments/assets/2d34a69a-8b78-4645-87f0-67b2661922a2" />  
 
 -Enjoy!
