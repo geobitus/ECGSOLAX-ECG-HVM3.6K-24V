@@ -9,12 +9,11 @@ A complete monitoring solution for ECGSOLAX inverters using Modbus RS232 communi
 The inverter communicates via a 'undercover USB' that is in fact a RS232 +- 12V level serial interface (COM 8). To connect to a Raspberry Pi:
 
 1. **Components Needed:**
-   - USB/RS232-DB9-male converter
-   - USB cable (wired as serial adapter)
-   - Connection to inverter COM(8)
+   - USB to RS232-DB9-male converter
+   - Spare USB A cable (wired to connect the 'undercover USB' (COM 8) to our RS232 converter)  
 
-2. **Wiring (USB Serial Adapter to DB9):**
-   - Red (5V) — Not used
+2. **Wiring ('undercover USB' to Serial Adapter DB9):**
+   - Red (5V?) — Not used
    - Green — Pin 2 DB9 (RX)
    - White — Pin 3 DB9 (TX)
    - Black — Pin 5 DB9 (GND)
