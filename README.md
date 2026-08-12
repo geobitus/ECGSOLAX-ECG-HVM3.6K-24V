@@ -6,7 +6,7 @@ A complete monitoring solution for ECGSOLAX inverters using Modbus RS232 communi
 
 ## Hardware Setup
 
-The inverter communicates via a USB RS232 serial interface (COM 8). To connect to a Raspberry Pi:
+The inverter communicates via a 'undercover USB' that is in fact a RS232 +- 12V level serial interface (COM 8). To connect to a Raspberry Pi:
 
 1. **Components Needed:**
    - USB/RS232-DB9-male converter
