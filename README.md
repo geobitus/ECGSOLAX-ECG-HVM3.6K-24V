@@ -1,53 +1,146 @@
 # ECGSOLAX-ECG-HVM3.6K-24V
+
 <img width="1589" height="941" alt="ecgsolax" src="https://github.com/user-attachments/assets/5c0890ee-728f-4337-af91-479dcab7361b" />  
 
-The USB socket COM(8) is in fact a communication RS232 serial +-12V level.  
-Use an USB/RS232-DB9-male converter connected to the RaspberryPI USB and a spare USB cable wired as described:  
-red = +5V not used, green = pin2 DB9(RX), white = pin3 DB9(TX), black = pin5 DB9(GND) connected to the COM(8) of the inverter.   
-That's all the hardware you need.  
-As OS I chose the DietPI release for the easiness of deployment and convenience.   
-Download the official image from https://dietpi.com/downloads/images/DietPi_RPi5-ARMv8-Trixie.img.xz  
-Decompress the ing.xz file:  
--$~ unxz DietPi_RPi5-ARMv8-Trixie.img.xz  
-Found the needed info about mount-points:  
--$~ sudo fdisk -l DietPi_RPi5-ARMv8-Trixie.img  
+A complete monitoring solution for ECGSOLAX inverters using Modbus RS232 communication, converting metrics to MQTT, and visualizing data through a Grafana dashboard via the TIG Stack (Telegraf, InfluxDB, Grafana).
 
-Disk DietPi_RPi5-ARMv8-Trixie.img: 1.07 GiB, 1149407232 bytes, 2244936 sectors  
-Units: sectors of 1 * 512 = 512 bytes  
-Sector size (logical/physical): 512 bytes / 512 bytes  
-I/O size (minimum/optimal): 512 bytes / 512 bytes  
-Disklabel type: dos  
-Disk identifier: 0xc7ff9455  
-Device                        Boot  Start     End Sectors   Size Id Type  
-DietPi_RPi5-ARMv8-Trixie.img1 *      2048  264191  262144   128M  c W95 FAT32 (LBA)  
-DietPi_RPi5-ARMv8-Trixie.img2      264192 2244935 1980744 967.2M 83 Linux 
+## Hardware Setup
 
--$~ echo $((264192 * 512)) "calculated offset"  
-135266304  calculated offset
+The inverter communicates via a USB RS232 serial interface (COM 8). To connect to a Raspberry Pi:
 
--$~ mkdir /media/sdcard
+1. **Components Needed:**
+   - USB/RS232-DB9-male converter
+   - USB cable (wired as serial adapter)
+   - Connection to inverter COM(8)
 
--$~ sudo mount -o loop,rw,sync,offset=135266304 DietPi_RPi5-ARMv8-Trixie.img /media/sdcard
+2. **Wiring (USB Serial Adapter to DB9):**
+   - Red (5V) — Not used
+   - Green — Pin 2 DB9 (RX)
+   - White — Pin 3 DB9 (TX)
+   - Black — Pin 5 DB9 (GND)
 
--$~ cd /media/sdcard/boot
--Copy/adapt provided or edit your own dietpi.txt & Automation_Custom_Script.sh files into boot directory.
+## Software Stack
 
--$~ sudo chmod 777 ./dietpi.txt
+- **OS**: DietPI (Raspberry Pi 5, ARMv8)
+- **Core Application**: Python 3 (Modbus RTU via minimalmodbus)
+- **Messaging**: MQTT (Mosquitto broker)
+- **Time-Series Database**: InfluxDB
+- **Data Collection**: Telegraf
+- **Visualization**: Grafana
 
--$~ sudo chmod 777 ./Automation_Custom_Script.sh
+## Installation
 
--$~ sudo umount /media/sdcard
+### 1. Prepare the SD Card
 
--Burn the .img file to sdcard using a burner at your choice.
+Download the DietPI image:
+```bash
+wget https://dietpi.com/downloads/images/DietPi_RPi5-ARMv8-Trixie.img.xz
+```
 
--Put the sdcard into the RaspberryPI, power-on and wait until Grafana become accessible @ 192.168.1.11:3000.
+Decompress:
+```bash
+unxz DietPi_RPi5-ARMv8-Trixie.img.xz
+```
 
--Configure initial Grafana user access and password at your choice.
+Find mount points:
+```bash
+sudo fdisk -l DietPi_RPi5-ARMv8-Trixie.img
+```
 
--In Grafana add data source and select influxdb set http://localhost:8086, Database 'solar', User 'apollo', Password 'apollo' press test button and if you see some measurements you are ready to go.
+Mount the filesystem (adjust offset as needed):
+```bash
+mkdir /media/sdcard
+sudo mount -o loop,rw,sync,offset=135266304 DietPi_RPi5-ARMv8-Trixie.img /media/sdcard
+```
 
--Import the provided .json dashboard in Grafana or create your own.  
+### 2. Configure DietPI
 
-<img width="1920" height="1080" alt="Screenshot From 2026-08-03 15-02-18" src="https://github.com/user-attachments/assets/2d34a69a-8b78-4645-87f0-67b2661922a2" />  
+Copy provided configuration files to `/media/sdcard/boot/`:
+- `dietpi.txt` — DietPI configuration
+- `Automation_Custom_Script.sh` — Initial setup script
 
--Enjoy!
+Set permissions:
+```bash
+sudo chmod 777 ./dietpi.txt ./Automation_Custom_Script.sh
+sudo umount /media/sdcard
+```
+
+### 3. Deploy to Raspberry Pi
+
+1. Burn the `.img` file to SD card using a tool like Balena Etcher or `dd`
+2. Insert SD card into Raspberry Pi 5
+3. Power on and wait for Grafana to become accessible at **http://192.168.1.11:3000**
+
+### 4. Configure Grafana
+
+1. **Initial Access**: Log in with default DietPI credentials
+2. **Change Password**: Set your preferred Grafana admin username and password
+3. **Add InfluxDB Data Source**:
+   - URL: `http://localhost:8086`
+   - Database: `solar`
+   - User: `apollo`
+   - Password: `apollo`
+   - Click "Test" button to verify connectivity
+4. **Import Dashboard**: Import the provided Grafana dashboard JSON file or create your own
+
+## Application Architecture
+
+### Python Core (`ecgsolax.py`)
+
+The Python application handles:
+
+- **Modbus Communication**: Reads registers from the ECGSOLAX inverter via RS232/RTU
+- **Metric Collection**: 
+  - Inverter state & faults
+  - Battery metrics (voltage, current, SOC, SOH)
+  - PV array metrics (voltage, current, power, energy)
+  - Mains metrics (voltage, power, consumption)
+  - Load metrics (power, energy, load percentage)
+  - Thermal metrics (heatsink & ambient temperature)
+  - Fan metrics (speed, status)
+  - Charging parameters & settings
+- **MQTT Publishing**: Sends metrics in InfluxDB Line Protocol format for automatic ingestion by Telegraf
+- **Error Handling**: Automatic retries with comprehensive logging
+
+### Shell Automation (`Automation_Custom_Script.sh`)
+
+The shell script automates:
+- Installation of TIG Stack components
+- MQTT broker configuration
+- Python environment setup
+- Systemd service enablement
+- Cron-based daemon startup
+
+## Metrics Published
+
+Metrics are published to MQTT topic `mydata` with device tags (inverter name, port, serial number):
+
+- `inverter_metrics` — Real-time inverter output and battery status
+- `inverter_bms_metrics` — Battery management system data
+- `inverter_mains_metrics` — Grid voltage and consumption
+- `inverter_load_metrics` — AC output load and energy
+- `inverter_pv_metrics` — Solar array performance
+- `inverter_fan_metrics` — Cooling system status
+- `inverter_temp_metrics` — Device temperatures
+- `inverter_program_metrics` — Configuration parameters
+
+## Dashboard Preview
+
+<img width="1920" height="1080" alt="Grafana Dashboard" src="https://github.com/user-attachments/assets/2d34a69a-8b78-4645-87f0-67b2661922a2" />
+
+## Topics
+
+- Modbus RTU communication
+- MQTT pub/sub messaging
+- InfluxDB time-series database
+- Grafana visualization
+- Python3 scripting
+- Telegraf metrics aggregation
+
+## License
+
+MIT License - See LICENSE file for details
+
+---
+
+**Enjoy monitoring your ECGSOLAX inverter!** ☀️
