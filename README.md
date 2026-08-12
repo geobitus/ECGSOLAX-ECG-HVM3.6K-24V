@@ -6,13 +6,14 @@ A complete monitoring solution for ECGSOLAX inverters using Modbus RS232 communi
 
 ## Hardware Setup
 
-The inverter communicates via a 'undercover USB' that is in fact a RS232 +- 12V level serial interface (COM 8). To connect to a Raspberry Pi:
+The inverter communicates via a 'undercover USB' type A socket that is in fact a RS232 +- 12V level serial interface (COM 8).  
+To connect to a Raspberry Pi:
 
 1. **Components Needed:**
    - USB to RS232-DB9-male converter
-   - Spare USB A cable (wired to connect the 'undercover USB' (COM 8) to our RS232 converter)  
+   - Spare USB A cable (wired to connect the 'undercover USB' (COM 8) to the DB9 of our USB to RS232 converter)  
 
-2. **Wiring ('undercover USB' to Serial Adapter DB9):**
+2. **Wiring COM8 to Serial converter DB9 via USB type A cable:**
    - Red (5V?) — Not used
    - Green — Pin 2 DB9 (RX)
    - White — Pin 3 DB9 (TX)
@@ -68,12 +69,12 @@ sudo umount /media/sdcard
 
 1. Burn the `.img` file to SD card using a tool like Balena Etcher or `dd`
 2. Insert SD card into Raspberry Pi 5
-3. Power on and wait for Grafana to become accessible at **http://192.168.1.11:3000**
+3. Power on and wait for Grafana to become accessible at **http://192.168.1.11:3000** !!this could last few good minutes depending on the internet connection!!
 
 ### 4. Configure Grafana
 
-1. **Initial Access**: Log in with default DietPI credentials
-2. **Change Password**: Set your preferred Grafana admin username and password
+1. **Initial Access**: Log in with default Grafana credentials admin/admin and change the username and password as you wish
+2. **Change Password**: Initial SSH username=dietpi password=password
 3. **Add InfluxDB Data Source**:
    - URL: `http://localhost:8086`
    - Database: `solar`
