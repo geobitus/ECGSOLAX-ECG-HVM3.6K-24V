@@ -74,14 +74,13 @@ sudo umount /media/sdcard
 ### 4. Configure Grafana
 
 1. **Initial Access**: Log in with default Grafana credentials admin/admin and change the username and password as you wish
-2. **Change Users login Password**: Initial SSH/Login username=dietpi  password=password  !you can change that into the dietpi.txt file before first boot! see installation step #2
-3. **Add InfluxDB Data Source**:
+2. **Add InfluxDB Data Source**:
    - URL: `http://localhost:8086`
    - Database: `solar`
    - User: `apollo`
    - Password: `apollo`
    - Click "Save & test" button to verify database connectivity
-4. **Import Dashboard**: Import the provided Grafana dashboard JSON file or create your own
+3. **Import Dashboard**: Import the provided Grafana dashboard JSON file or create your own
 
 ## Application Architecture
 
