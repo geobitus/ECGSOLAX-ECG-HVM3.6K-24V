@@ -385,7 +385,7 @@ if __name__ == "__main__":                                                  # Ma
                 collect_pv_metrics()                                        # Collect and publish PV metrics to MQTT
                 collect_fan_metrics()                                       # Collect and publish fan metrics to MQTT
                 collect_temp_metrics()                                      # Collect and publish temperature metrics to MQTT
-                collect_program_metrics()                                   # Collect and publish program metrics to MQTT
+ #               collect_program_metrics()                                   # Collect and publish program metrics to MQTT
 
             elapsed = time.time() - start_time                              # Calculate the elapsed time for the loop iteration
             sleep_time = max(0.1, POLL_INTERVAL - elapsed)                  # Calculate the sleep time to maintain the polling interval, ensuring a minimum sleep time of 0.1 seconds
