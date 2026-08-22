@@ -1,4 +1,4 @@
-# ECGSOLAX-ECG-HVM3.6K-24V
+# ECGSOLAX-ECG-HVM3.6K-24V +++ NEED to SOLVE HW or SW USB EMI DISCONNECT +++
 
 <img width="1589" height="941" alt="ecgsolax" src="https://github.com/user-attachments/assets/5c0890ee-728f-4337-af91-479dcab7361b" />  
 
